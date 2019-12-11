@@ -1,0 +1,158 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Help
+{% endblock %}
+
+{% block main %}
+  <h1>Help</h1>
+  <br>
+
+  <div class="center-text">
+    <h3>Survey Results</h3>
+    <div>
+      <p>
+        This will be the first of two files that you'll need to get your data.
+        After collecting responses to an online survey (Google Forms, Microsoft
+        Forms, etc.) you will need to download the results from your survey as
+        an .xlsx file.  It is recommended that you ensure that your columns headers
+        do not contain spaces (use underscores "_" instead) and are logical for the
+        creation of your SQL queries in the next step.
+      </p>
+      An example of 3 survey responses is shown below:
+    </div>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">A</th>
+          <th scope="col">B</th>
+          <th scope="col">C</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>age</td>
+          <td>sex</td>
+          <td>HF</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>22</td>
+          <td>Female</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>21</td>
+          <td>Male</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <th scope="row">4</th>
+          <td>24</td>
+          <td>Female</td>
+          <td>5</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <h3>Query List</h3>
+    <div>
+      <p>
+        This is the second of two required files that you'll need to get your data.
+        For the sake of simplicity, the table created for you to use in your SQL
+        queries will always be named "ResultsTable".
+      </p>
+      Your SQL queries need to be written in a .csv file, as shown in the
+      example below:
+    </div>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">A</th>
+          <th scope="col">B</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>select count(sex) from ResultsTable where sex = 'Female'</td>
+          <td>select count(sex) from ResultsTable where sex = 'Female' and HF <=3</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <h3>Output</h3>
+    <div>
+      <p>
+        This is the output file in .csv format that is returned and contains the
+        results of your SQL queries when run against the database created from your
+        submitted results (.xlsx) file.  It will show the queries that were run
+        with the result below each.  If a query couldn't be run the result beneath
+        it will show "**Error: Query Failed**".
+      </p>
+      The output from the example results xlsx file and query list .csv above is shown below:
+    </div>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">A</th>
+          <th scope="col">B</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>select count(sex) from ResultsTable where sex = 'Female'</td>
+          <td></td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>2</td>
+          <td></td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>select count(sex) from ResultsTable where sex = 'Female' and HF <=3</td>
+          <td></td>
+        </tr>
+        <tr>
+          <th scope="row">4</th>
+          <td>1</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <p>
+        The first query in the example table above will give you the number of respondees
+        who selected "Female" as their sex.  Based on the example responses above, this
+        will return "2".
+      </p>
+
+      <p>
+        The second query in the table above will give you the number of respondees
+        who selected "Female" as their sex and (in the case of the example survey)
+        selected 3 or less on a scale from 1-5 as to how Hostile or Friendly the
+        campus is.  This gives the number of female respondents who feel the campus is between
+        Neutral and Hostile. Based on the example responses above, this will return "1".
+      </p>
+    </div>
+    <h3>Basic SQL Queries</h3>
+    <div>
+      <span>The most basic SQL queries are built similarly to the template below:</span>
+      <li class="font-weight-bold">SELECT (*what you want*) FROM (*table_name*) WHERE (*conditions*)</li>
+      <span>So, in the example above we: </span>
+      <li class="font-weight-bold">SELECT count(column-header) FROM ResultsTable WHERE sex = 'Female'</li>
+      <span>In order to get the count of rows (survey responses) where the respondee marked their sex as "Female".</span>
+    </div>
+    <br>
+    <div>
+      For additional help with writing SQL queries see <a href="https://www.w3schools.com/sql/sql_intro.asp">a helpful tutorial like this one</a>.
+    </div>
+  </div>
+{% endblock %}

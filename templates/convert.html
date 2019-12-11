@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Convert Online
+{% endblock %}
+
+{% block main %}
+  <h1>Convert</h1>
+
+  <div>
+    Convert a results file from a survey in .xlsx format along with a SQL query .csv file into a final results.csv file.
+  </div>
+  <br>
+  <br>
+  <form action="/convert" method="post" class="needs-validation" novalidate>
+    <div class="form-group row">
+      <label for="xlsxFile col-sm-2 col-form-label" class="font-weight-bold">Survey results XLSX file</label>
+      <input type="file" class="form-control-file" id="xlsxFile" accept=".xlsx" required>
+        <small id="nameHelp" class="form-text text-muted">Select your results .xlsx file for upload</small>
+      <div class="invalid-feedback col-sm-2">
+        Please provide an .xlsx file.
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="queryList col-sm-2 col-form-label" class="font-weight-bold">Query list CSV file</label>
+      <input type="file" class="form-control-file" id="queryList" accept=".csv" required>
+      <small id="nameHelp" class="form-text text-muted">Select your query .csv file for upload</small>
+      <div class="invalid-feedback col-sm-2">
+        Please provide a .csv file.
+      </div>
+    </div>
+    <br>
+    <div class="form-group row">
+      <div>
+        <button type="submit" class="btn btn-primary">Convert</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Javascript for Bootstrap -->
+  <script>
+  (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          var forms = document.getElementsByClassName('needs-validation');
+          // Loop over them and prevent submission
+          var validation = Array.prototype.filter.call(forms, function(form) {
+              form.addEventListener('submit', function(event) {
+              if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+          }, false);
+          });
+      }, false);
+  })();
+  </script>
+{% endblock %}

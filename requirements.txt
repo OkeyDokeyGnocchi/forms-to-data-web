@@ -1,0 +1,11 @@
+Flask
+Flask-Session
+requests
+xlrd
+csv
+SQLITE3
+os
+sys
+subprocess
+pathlib
+pandas
