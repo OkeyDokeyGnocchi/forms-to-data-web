@@ -1,6 +1,7 @@
 Flask
 Flask-Mail
 Flask-Session
+gunicorn
 pandas
 xlrd
 werkzeug
