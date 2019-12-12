@@ -1,7 +1,6 @@
 Flask
 Flask-Mail
 Flask-Session
-SQLITE3
 pandas
 tempfile
 xlrd
