@@ -4,9 +4,10 @@ import sqlite3
 import pandas as pd
 import string
 import random
+import os
 
 
-def connect_database(user_query, converted_csv, database, user_filename):
+def connect_database(user_query, converted_csv, database, user_filename, app):
     df = pd.read_csv(converted_csv, index_col=0)
     df.columns = df.columns.str.strip()
 
@@ -17,7 +18,8 @@ def connect_database(user_query, converted_csv, database, user_filename):
     except ValueError:
         df.to_sql("ResultsTable", conn, if_exists='replace')
 
-    output_file = 'results_' + user_filename + '.csv'
+    output_file = os.path.join(app.instance_path, 'output', 'results_' +
+                               user_filename + '.csv')
     query_list = pd.read_csv(user_query, delimiter=',')
 
     for i in query_list:
@@ -40,17 +42,19 @@ def connect_database(user_query, converted_csv, database, user_filename):
     return output_file
 
 
-def create_database(user_filename):
+def create_database(user_filename, app):
     # Use pandas to create a dataframe (with no index # column) from csv
     # str.strip() allows it to remove whitespace so it doesn't break
-    db_name = user_filename + '_database.db'
+    db_name = os.path.join(app.instance_path, 'output',
+                           user_filename + '_database.db')
     sqlite3.connect(db_name)
     return db_name
 
 
-def excel_convert(xlsx_file, user_filename):
+def excel_convert(xlsx_file, user_filename, app):
     excel_path = xlsx_file
-    csv_path = user_filename + '.csv'
+    csv_path = os.path.join(app.instance_path, 'output',
+                            user_filename + '.csv')
     # pathlib.Path(path + '/outputFiles/').mkdir(parents=True, exist_ok=True)
 
     with xlrd.open_workbook(excel_path) as wb:

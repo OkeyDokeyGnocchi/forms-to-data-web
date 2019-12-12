@@ -11,6 +11,7 @@ from flask_mail import (
 )
 from flask_session import Session
 from tempfile import mkdtemp
+from werkzeug import secure_filename
 from werkzeug.exceptions import (
     default_exceptions,
     HTTPException,
@@ -25,7 +26,10 @@ from helpers import (
 )
 
 # Configure application
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=True)
+
+os.makedirs(os.path.join(app.instance_path, 'htmlfi'), exist_ok=True)
+os.makedirs(os.path.join(app.instance_path, 'output'), exist_ok=True)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -72,29 +76,40 @@ def history():
         mail = Mail(app)
 
         # Get input from the posted form
-        user_input = request.form
+        user_filename = generate_filename()
 
-        if "xlsxFile" not in user_input.files:
-            return render_template("apology.html")
-        elif "queryList" not in user_input.files:
-            return render_template("apology.html")
-        else:
-            xlsxFile = request.files['xlsxFile']
-            user_query = request.files["queryList"]
-            user_email = request.form.get("userEmail")
-            user_filename = generate_filename()
+        xlsxFile = request.files['xlsxFile']
+        xlsx_filename = secure_filename(xlsxFile.filename)
+        xlsxFile.save(os.path.join(app.instance_path, 'htmlfi', xlsx_filename))
+        xl = os.path.join(app.instance_path, 'htmlfi', xlsx_filename)
 
-        converted_csv = excel_convert(xlsxFile, user_filename)
-        database = create_database(user_filename)
-        results_file = connect_database(user_query, converted_csv,
-                                        database, user_filename)
+        user_query = request.files["queryList"]
+        q_filename = secure_filename(user_query.filename)
+        user_query.save(os.path.join(app.instance_path, 'htmlfi', q_filename))
+        query = os.path.join(app.instance_path, 'htmlfi', q_filename)
+
+        user_email = request.form.get("userEmail")
+
+        converted_csv = excel_convert(xl, user_filename, app)
+        database = create_database(user_filename, app)
+        results_file = connect_database(query, converted_csv,
+                                        database, user_filename, app)
 
         msg = Message(subject="Your Forms-to-Data Results",
                       sender=app.config.get("MAIL_USERNAME"),
                       recipients=[user_email],
                       body="Your results are attached!")
-        msg.attach(results_file)
+        with app.open_resource(results_file) as fp:
+            msg.attach('results.csv', 'text/csv', fp.read())
         mail.send(msg)
+
+        os.remove(xl)
+        os.remove(query)
+        os.remove(converted_csv)
+        os.remove(database)
+        os.remove(results_file)
+
+        return render_template("sent.html")
 
     else:
         return render_template("convert.html")
