@@ -2,16 +2,14 @@ import os
 
 from flask import (
     Flask,
-    redirect,
     render_template,
-    request,
-    session
+    request
 )
-from flask_session import Session
 from flask_mail import (
     Mail,
     Message
 )
+from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import (
     default_exceptions,
