@@ -4,4 +4,3 @@ Flask-Session
 pandas
 xlrd
 werkzeug
-werkzeug.exceptions
