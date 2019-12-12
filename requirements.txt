@@ -1,16 +1,8 @@
-csv
 Flask
 Flask-Mail
 Flask-Session
-os
-random
-requests
 SQLITE3
-subprocess
-sys
 pandas
-pathlib
-string
 tempfile
 xlrd
 werkzeug
