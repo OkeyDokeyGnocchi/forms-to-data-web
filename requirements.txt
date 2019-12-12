@@ -11,4 +11,5 @@ sys
 pandas
 pathlib
 string
+tempfile
 xlrd

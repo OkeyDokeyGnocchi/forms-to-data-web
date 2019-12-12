@@ -1,13 +1,9 @@
 import xlrd
 import csv
 import sqlite3
-import sys
-import subprocess
-import pathlib
 import pandas as pd
 import string
 import random
-
 
 
 def connect_database(user_query, converted_csv, database, user_filename):
