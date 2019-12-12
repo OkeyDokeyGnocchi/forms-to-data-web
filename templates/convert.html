@@ -15,7 +15,7 @@
   <form action="/convert" method="post" class="needs-validation" novalidate>
     <div class="form-group row">
       <label for="xlsxFile col-sm-2 col-form-label" class="font-weight-bold">Survey results XLSX file</label>
-      <input type="file" class="form-control-file" id="xlsxFile" accept=".xlsx" required>
+      <input type="file" class="form-control-file" id="xlsxFile" name="xlsxFile" accept=".xlsx" required>
         <small id="nameHelp" class="form-text text-muted">Select your results .xlsx file for upload</small>
       <div class="invalid-feedback col-sm-2">
         Please provide an .xlsx file.
@@ -23,10 +23,18 @@
     </div>
     <div class="form-group row">
       <label for="queryList col-sm-2 col-form-label" class="font-weight-bold">Query list CSV file</label>
-      <input type="file" class="form-control-file" id="queryList" accept=".csv" required>
+      <input type="file" class="form-control-file" id="queryList" name="queryList" accept=".csv" required>
       <small id="nameHelp" class="form-text text-muted">Select your query .csv file for upload</small>
       <div class="invalid-feedback col-sm-2">
         Please provide a .csv file.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="userEmail">Email address</label>
+      <input type="email" class="form-control" id="userEmail" name="userEmail" aria-describedby="emailHelp" placeholder="Email address">
+      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      <div class="invalid-feedback col-sm-2">
+        Please provide your email address.
       </div>
     </div>
     <br>

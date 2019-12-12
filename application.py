@@ -2,14 +2,16 @@ import os
 
 from flask import (
     Flask,
-    flash,
-    jsonify,
     redirect,
     render_template,
     request,
     session
 )
 from flask_session import Session
+from flask_mail import (
+    Mail,
+    Message
+)
 from tempfile import mkdtemp
 from werkzeug.exceptions import (
     default_exceptions,
@@ -18,9 +20,10 @@ from werkzeug.exceptions import (
 )
 
 from helpers import (
-    excel_convert,
+    connect_database,
     create_database,
-    connect_database
+    excel_convert,
+    generate_filename
 )
 
 # Configure application
@@ -57,7 +60,44 @@ def history():
     """The bread and butter. The main event."""
 
     if request.method == "POST":
-        """Do stuff"""
+        # Set email settings
+        email_settings = {
+            "MAIL_SERVER": "smtp.gmail.com",
+            "MAIL_PORT": 465,
+            "MAIL_USE_TLS": False,
+            "MAIL_USE_SSL": True,
+            "MAIL_USERNAME": os.environ['EMAIL_USER'],
+            "MAIL_PASSWORD": os.environ['EMAIL_PASSWORD']
+        }
+
+        app.config.update(email_settings)
+        mail = Mail(app)
+
+        # Get input from the posted form
+        user_input = request.form
+
+        if "xlsxFile" not in user_input.files:
+            return render_template("apology.html")
+        elif "queryList" not in user_input.files:
+            return render_template("apology.html")
+        else:
+            xlsxFile = request.files['xlsxFile']
+            user_query = request.files["queryList"]
+            user_email = request.form.get("userEmail")
+            user_filename = generate_filename()
+
+        converted_csv = excel_convert(xlsxFile, user_filename)
+        database = create_database(user_filename)
+        results_file = connect_database(user_query, converted_csv,
+                                        database, user_filename)
+
+        msg = Message(subject="Your Forms-to-Data Results",
+                      sender=app.config.get("MAIL_USERNAME"),
+                      recipients=[user_email],
+                      body="Your results are attached!")
+        msg.attach(results_file)
+        mail.send(msg)
+
     else:
         return render_template("convert.html")
 
