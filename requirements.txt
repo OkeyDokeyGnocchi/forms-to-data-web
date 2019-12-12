@@ -2,7 +2,6 @@ Flask
 Flask-Mail
 Flask-Session
 pandas
-tempfile
 xlrd
 werkzeug
 werkzeug.exceptions
