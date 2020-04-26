@@ -8,14 +8,15 @@
     
 <h4>Why does it exist?</h4>
     <span>
-      Forms to Data was created following a costly "campus climate" survey.  It became
+      Forms to Data was created following a costly campus climate survey.  It became
       clear that many organizations cannot afford to hire someone to complete the work of turning
       survey results into data that they can use to determine direction and policy.  This data,
       however, can be very useful in helping to answer any number of important questions.
       By using a survey tool such as Google Forms, Microsoft Forms, etc. it is possible for organizations
       to collect results from surveys, and Forms to Data then allows them to take the resulting
       .xlsx file and run SQL queries against it without having to invest in databases
-      and server hardware on their own end.
+      and server hardware on their own end.  This project started as a passion project that was on the 
+      backburner and then updated, upgraded, and finished as my final project for CS-50x.
     </span>
     
 <h4>How can I use it?</h4>
